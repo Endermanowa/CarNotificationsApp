@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Vehicle name -->
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:paddingBottom="8dp"/>
+
+    <!-- Vehicle license plate -->
+    <TextView
+        android:id="@+id/textViewLicensePlate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingBottom="8dp"/>
+
+    <!-- Vehicle OC date -->
+    <TextView
+        android:id="@+id/textViewOcDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"
+        android:paddingBottom="8dp"/>
+
+    <!-- Vehicle maintenance date -->
+    <TextView
+        android:id="@+id/textViewMaintenanceDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="11sp"/>
+
+</LinearLayout>

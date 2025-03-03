@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <!-- Vehicle Name Input -->
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Vehicle Name"
+        android:inputType="text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- License Plate Input -->
+    <EditText
+        android:id="@+id/editTextLicensePlate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="License Plate"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/editTextName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- OC Date Input (button to pick date) -->
+    <Button
+        android:id="@+id/buttonOcDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick OC Date"
+        app:layout_constraintTop_toBottomOf="@id/editTextLicensePlate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Maintenance Date Input (button to pick date) -->
+    <Button
+        android:id="@+id/buttonMaintenanceDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Pick Maintenance Date"
+        app:layout_constraintTop_toBottomOf="@id/buttonOcDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
