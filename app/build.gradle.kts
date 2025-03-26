@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.carnotificationsapp"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.carnotificationsapp"
@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.room.runtime)
     annotationProcessor(libs.room.compiler)
 
+    implementation(libs.core.ktx)
+    implementation(libs.work.runtime.ktx)
     implementation(libs.work.runtime)
 
     testImplementation(libs.junit)

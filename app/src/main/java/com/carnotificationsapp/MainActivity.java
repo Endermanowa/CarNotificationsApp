@@ -1,9 +1,12 @@
 package com.carnotificationsapp;
 
 import android.app.DatePickerDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.carnotificationsapp.notifications.NotificationScheduler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        createNotificationChannel();
+
+        // Create and schedule the periodic notification worker
+        NotificationScheduler notificationScheduler = new NotificationScheduler(this);
+        notificationScheduler.scheduleNotification();
 
         preferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
@@ -90,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
         String json = gson.toJson(vehicleList);
         editor.putString(KEY, json);
         editor.apply();
+
+        cancelAllNotifications();
+        NotificationScheduler notificationScheduler = new NotificationScheduler(this);
+        notificationScheduler.scheduleNotification();
     }
 
     private void loadList() {
@@ -235,5 +249,25 @@ public class MainActivity extends AppCompatActivity {
                 calendar.get(Calendar.DAY_OF_MONTH)
         );
         datePickerDialog.show();
+    }
+
+
+    public void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "notify_channel",
+                    "My Notification Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void cancelAllNotifications() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
     }
 }
