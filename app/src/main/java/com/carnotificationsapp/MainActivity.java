@@ -30,10 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private VehicleAdapter vehicleAdapter;
     private List<Vehicle> vehicleList; // This should be populated from the database
-    long ocDate = (long)0;
-    String ocString = "";
-    long maintenanceDate = (long)0;
-    String maintenanceString = "";
+    long ocDate = 0;
+    long maintenanceDate = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,20 +160,14 @@ public class MainActivity extends AppCompatActivity {
     private void showChangeOcDialog() {
         int selectedPosition = vehicleAdapter.getSelectedPosition();
         if (selectedPosition != RecyclerView.NO_POSITION) {
-            showDatePickerDialogChange(true);
-            vehicleList.get(selectedPosition).setOcDate(ocDate);
-            saveList();
-            loadList();
-            vehicleAdapter.updateList(vehicleList);
-            vehicleAdapter.notifyItemChanged(selectedPosition);
-            vehicleAdapter.clearSelection(); // Clear selection after removing
+            showDatePickerDialogChange(true, selectedPosition);
         }
     }
 
     private void showChangeMaintenanceDialog() {
         int selectedPosition = vehicleAdapter.getSelectedPosition();
         if (selectedPosition != RecyclerView.NO_POSITION) {
-            showDatePickerDialogChange(false);
+            showDatePickerDialogChange(false, selectedPosition);
             vehicleList.get(selectedPosition).setMaintenanceDate(maintenanceDate);
             saveList();
             loadList();
@@ -185,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showDatePickerDialogChange(boolean isOcDate) {
+    private void showDatePickerDialogChange(boolean isOcDate, int car) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 this,
@@ -194,14 +186,24 @@ public class MainActivity extends AppCompatActivity {
                     selectedDate.set(year, month, dayOfMonth, 0, 0, 0);
                     long selectedTimestamp = selectedDate.getTimeInMillis();
 
-                    String formattedDate = String.format("%d/%d/%d", dayOfMonth, month + 1, year);
-
                     if (isOcDate) {
                         ocDate = selectedTimestamp;
-                        ocString = formattedDate;
+
+                        vehicleList.get(car).setOcDate(ocDate);
+                        saveList();
+                        loadList();
+                        vehicleAdapter.updateList(vehicleList);
+                        vehicleAdapter.notifyItemChanged(car);
+                        vehicleAdapter.clearSelection();
                     } else {
                         maintenanceDate = selectedTimestamp;
-                        maintenanceString = formattedDate;
+
+                        vehicleList.get(car).setMaintenanceDate(maintenanceDate);
+                        saveList();
+                        loadList();
+                        vehicleAdapter.updateList(vehicleList);
+                        vehicleAdapter.notifyItemChanged(car);
+                        vehicleAdapter.clearSelection();
                     }
                 },
                 calendar.get(Calendar.YEAR),
@@ -220,18 +222,13 @@ public class MainActivity extends AppCompatActivity {
                     selectedDate.set(year, month, dayOfMonth, 0, 0, 0);
                     long selectedTimestamp = selectedDate.getTimeInMillis();
 
-                    String formattedDate = String.format("%d/%d/%d", dayOfMonth, month + 1, year);
-
                     if (isOcDate) {
                         ocDate = selectedTimestamp;
-                        ocString = formattedDate;
+                        button.setText(String.format("OC:  %d/%d/%d", dayOfMonth, month + 1, year));
                     } else {
                         maintenanceDate = selectedTimestamp;
-                        maintenanceString = formattedDate;
+                        button.setText(String.format("Maintenance: %d/%d/%d", dayOfMonth, month + 1, year));
                     }
-
-                    // Update the button text **after** the user picks a date
-                    button.setText(formattedDate);
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
